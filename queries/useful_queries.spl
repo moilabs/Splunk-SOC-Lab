@@ -1,0 +1,31 @@
+# Purpose: Track all hosts and check last log ingestion time
+| metadata type=hosts
+| eval Minutes_Since_Last_Log=round((now()-lastTime)/60,2)
+| eval Status=if(Minutes_Since_Last_Log < 10, "✅ ONLINE", "❌ OFFLINE")
+| table host, lastTime, Minutes_Since_Last_Log, Status
+| rename host as "Server Name", lastTime as "Last Seen", Minutes_Since_Last_Log as "Idle (Min)"
+| fieldformat "Last Seen"=strftime('Last Seen', "%Y-%m-%d %H:%M:%S")
+
+# Purpose: Detect failed login attempts and categorize by type
+index=* "failed" OR "invalid"
+| eval Action=case(
+    searchmatch("failed password"), "Wrong_Password",
+    searchmatch("invalid user"), "Unknown_Username",
+    1=1, "Other_Failures"
+)
+| chart count over host by Action
+| rename host as "Server Name", Wrong_Password as "Wrong Password", Unknown_Username as "Unknown User", Other_Failures as "System Failures"
+| fillnull value=0
+
+# Purpose: Monitor data ingestion volume per host over time
+index=*
+| timechart span=5m count by host
+
+# Purpose: Count successful session logins per user
+index=* "session opened" OR "accepted password"
+| rex "for user (?<user>\S+)"
+| stats count by user
+
+# Purpose: Show recent suspicious activity (failed logins, invalid attempts, watchdog alerts)
+index=* "failed" OR "invalid" OR "watchdog"
+| sort -_time
