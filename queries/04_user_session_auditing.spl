@@ -1,0 +1,4 @@
+# Purpose: Count successful session logins per user
+index=* "session opened" OR "accepted password"
+| rex "for user (?<user>\S+)"
+| stats count by user
