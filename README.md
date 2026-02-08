@@ -37,7 +37,7 @@ Analyzing raw events to identify specific service failures and unauthorized acce
 ![Alert Logic](screenshots/02_Brute_Force_Alert_Logic.png)
 
 ### 3️⃣ Real-Time Alert Triggered
-![Alert Detection](screenshots/03_RealTime_Alert_Detection.png)
+![Alert Detection](screenshots/03_RealTime_Alert_Detection.png.png)
 
 ### 4️⃣ Deep-Dive Log Analysis
 ![Log Analysis](screenshots/04_Raw_Log_Analysis.png)
