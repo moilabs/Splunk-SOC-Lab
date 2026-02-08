@@ -1,0 +1,3 @@
+# Purpose: Monitor data ingestion volume per host over time
+index=*
+| timechart span=5m count by host
