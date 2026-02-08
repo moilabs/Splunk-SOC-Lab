@@ -26,3 +26,18 @@ Analyzing raw events to identify specific service failures and unauthorized acce
 2. **Splunk Indexer** processes and categorizes the data.
 3. Custom **SPL (Search Processing Language)** queries filter for security incidents.
 4. **Alert Actions** are triggered to notify the SOC team for immediate response.
+
+   
+## 📸 Project Evidence
+
+### 1️⃣ Security Dashboard Overview
+![Dashboard Overview](screenshots/01_Security_Dashboard_Overview.png)
+
+### 2️⃣ Brute Force Detection Alert
+![Alert Logic](screenshots/02_Brute_Force_Alert_Logic.png)
+
+### 3️⃣ Real-Time Alert Triggered
+![Alert Detection](screenshots/03_RealTime_Alert_Detection.png)
+
+### 4️⃣ Deep-Dive Log Analysis
+![Log Analysis](screenshots/04_Raw_Log_Analysis.png)
