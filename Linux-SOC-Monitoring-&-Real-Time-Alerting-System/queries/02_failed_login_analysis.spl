@@ -1,0 +1,10 @@
+# Purpose: Detect failed login attempts and categorize by type
+index=* "failed" OR "invalid"
+| eval Action=case(
+    searchmatch("failed password"), "Wrong_Password",
+    searchmatch("invalid user"), "Unknown_Username",
+    1=1, "Other_Failures"
+)
+| chart count over host by Action
+| rename host as "Server Name", Wrong_Password as "Wrong Password", Unknown_Username as "Unknown User", Other_Failures as "System Failures"
+| fillnull value=0
