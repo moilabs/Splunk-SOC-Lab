@@ -1,7 +1,0 @@
-# Purpose: Track all hosts and check last log ingestion time
-| metadata type=hosts
-| eval Minutes_Since_Last_Log=round((now()-lastTime)/60,2)
-| eval Status=if(Minutes_Since_Last_Log < 10, "✅ ONLINE", "❌ OFFLINE")
-| table host, lastTime, Minutes_Since_Last_Log, Status
-| rename host as "Server Name", lastTime as "Last Seen", Minutes_Since_Last_Log as "Idle (Min)"
-| fieldformat "Last Seen"=strftime('Last Seen', "%Y-%m-%d %H:%M:%S")

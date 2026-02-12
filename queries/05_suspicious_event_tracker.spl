@@ -1,3 +1,0 @@
-# Purpose: Show recent suspicious activity (failed logins, invalid attempts, watchdog alerts)
-index=* "failed" OR "invalid" OR "watchdog"
-| sort -_time
