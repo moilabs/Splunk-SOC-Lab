@@ -1,1 +1,99 @@
-
+<dashboard version="1.1" theme="dark">
+  <label>SOC Attack Detection &amp; Monitoring Lab</label>
+  <row>
+    <panel>
+      <title>Failed password logs</title>
+      <chart>
+        <search>
+          <query>index=* "Failed password"
+| rex "from (?&lt;attacker_ip&gt;\d+\.\d+\.\d+\.\d+)"
+| bucket _time span=1m
+| stats count by _time, attacker_ip
+| where count &gt; 5</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">bar</option>
+        <option name="charting.drilldown">all</option>
+        <option name="refresh.display">preview</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Table showing attacker IP + counts</title>
+      <table>
+        <search>
+          <query>index=* "Failed password"
+| rex "from (?&lt;attacker_ip&gt;\d+\.\d+\.\d+\.\d+)"
+| stats count by attacker_ip
+| sort -count</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="count">5</option>
+        <option name="dataOverlayMode">highlow</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">true</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">false</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Login Attempts Outside Business Hours</title>
+      <table>
+        <search>
+          <query>index=* "Accepted password"
+| eval hour=strftime(_time,"%H")
+| where hour&lt;8 OR hour&gt;17
+| stats count by host,user,hour</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+          <refresh>5m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Successful SSH Logins</title>
+      <chart>
+        <search>
+          <query>index=* ("session opened" OR "Accepted password")
+| rex "for (user )?(?&lt;user&gt;\w+)"
+| stats count by host, user</query>
+          <earliest>-4h@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+          <refresh>1m</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.showDataLabels">all</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="refresh.display">preview</option>
+      </chart>
+    </panel>
+  </row>
+</dashboard>
