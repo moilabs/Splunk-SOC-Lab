@@ -1,1 +1,35 @@
+ALERT NAME:
+SSH Brute Force Attack Detected
+
+DESCRIPTION:
+Detects multiple failed SSH login attempts from a single IP within a short time window. Possible brute force attack.
+
+PLATFORM:
+Splunk Enterprise
+
+DETECTION QUERY:
+SSH Brute Force Detection Query (see detection_query.txt)
+
+TIME RANGE:
+Last 5 minutes
+
+TRIGGER CONDITION:
+Number of results > 0
+
+SEVERITY:
+High
+
+SCHEDULE:
+Run every 5 minutes
+
+THROTTLE:
+Disabled (for lab testing)
+
+USE CASE:
+Identify brute force attacks against Linux SSH services.
+
+LAB ENVIRONMENT:
+Attacker: Kali Linux
+Targets: RHEL / Zorin OS
+SIEM: Splunk listener on Windows
 
