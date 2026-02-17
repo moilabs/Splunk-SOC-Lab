@@ -1,1 +1,39 @@
+==============================
+SSH BRUTE FORCE DETECTION
+==============================
+
+index=* "Failed password"
+| rex "from (?<attacker_ip>\d+\.\d+\.\d+\.\d+)"
+| bucket _time span=1m
+| stats count by _time, attacker_ip
+| where count > 5
+
+
+==============================
+TOP ATTACKER IPs
+==============================
+
+index=* "Failed password"
+| rex "from (?<attacker_ip>\d+\.\d+\.\d+\.\d+)"
+| stats count by attacker_ip
+| sort -count
+
+
+==============================
+LOGIN OUTSIDE BUSINESS HOURS
+==============================
+
+index=* "Accepted password"
+| eval hour=strftime(_time,"%H")
+| where hour<8 OR hour>17
+| stats count by host,user,hour
+
+
+==============================
+SUCCESSFUL SSH LOGINS
+==============================
+
+index=* ("session opened" OR "Accepted password")
+| rex "for (user )?(?<user>\w+)"
+| stats count by host, user
 
