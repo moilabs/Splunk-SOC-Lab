@@ -29,6 +29,33 @@ SSH brute force attacks were simulated using Hydra to generate multiple failed l
 
 ---
 
+## 🕒 Attack Timeline
+
+SSH brute force simulations were executed from a Kali Linux attacker machine on 12 February 2026.
+
+#### Attack Session 1
+- **Start Time:** 2026-02-12 23:24:00
+- **Target Host:** 10.236.163.180
+- **Target Username:** sadia
+- **Tool Used:** Hydra v9.6
+- **Wordlist:** rockyou.txt
+- **Protocol:** SSH (Port 22)
+- **Total Failed Attempts:** 1801
+
+#### Attack Session 2
+- **Start Time:** 2026-02-12 23:28:37
+- **Target Host:** 10.236.163.53
+- **Target Username:** redhat-zb
+- **Tool Used:** Hydra v9.6
+- **Wordlist:** rockyou.txt
+- **Protocol:** SSH (Port 22)
+- - **Total Failed Attempts:** 294
+
+Both sessions generated multiple failed SSH authentication attempts, which were successfully detected and logged in Splunk.
+
+No successful login was observed during the attack simulation.
+---
+
 ## 🔍 Detection Logic
 Detection was implemented using Splunk SPL queries to monitor:
 
