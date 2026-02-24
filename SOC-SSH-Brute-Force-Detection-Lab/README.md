@@ -53,7 +53,26 @@ SSH brute force simulations were executed from a Kali Linux attacker machine on 
 Both sessions generated multiple failed SSH authentication attempts, which were successfully detected and logged in Splunk.
 
 No successful login was observed during the attack simulation.
+
 ---
+
+## 🗂 MITRE ATT&CK Mapping
+
+This lab maps the SSH brute force simulation to the MITRE ATT&CK framework:
+
+- **Technique ID:** T1110  
+- **Technique Name:** Brute Force  
+- **Description:** Attempts to gain access by systematically guessing passwords on SSH accounts.  
+- **Observed Behavior in Lab:**
+  - Multiple failed login attempts from single source IPs
+  - Attempts against high-privileged accounts (root, admin)
+  - Logins outside normal hours
+- **Detection Method:**
+  - Splunk SPL queries monitored `/var/log/secure` for failed authentication attempts
+  - Alerts configured for multiple failed logins per IP
+  - Top attacking IPs visualized on dashboards
+    
+  ---
 
 ## 🔍 Detection Logic
 Detection was implemented using Splunk SPL queries to monitor:
