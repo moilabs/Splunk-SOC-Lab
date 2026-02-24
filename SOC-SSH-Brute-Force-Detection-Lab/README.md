@@ -1,4 +1,3 @@
-
 # SOC SSH Brute Force Detection Lab
 
 ## 📌 Project Overview
