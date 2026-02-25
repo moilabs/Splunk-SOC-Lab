@@ -75,16 +75,13 @@ This lab maps the SSH brute force simulation to the MITRE ATT&CK framework:
   ---
 
 ## 🔍 Detection Logic
-Detection was implemented using Splunk SPL queries to monitor:
 
-- Multiple failed SSH login attempts per IP
+### Time-Based Brute Force Detection
 
-- Top attacking IP addresses
+This query detects high-frequency failed SSH login attempts by aggregating events per source IP within a 1-minute window.  
+IPs generating more than 5 failed attempts per minute are flagged as potential brute force sources.  
+The detection logic supports real-time alerting and rapid identification of suspicious authentication activity.
 
-- Logins outside business hours
-
-- Successful SSH logins for correlation
-  
 ![Detection Query](screenshots/03_detection_query.png)
 
 ---
@@ -96,11 +93,22 @@ Splunk alert triggered when brute force threshold exceeded.
 
 ---
 
-## 🕵️ Investigation Evidence
+## 🕵️ Investigation Workflow
 - Collected logs provided evidence of attacker IPs and failed login attempts, facilitating incident investigation.
 
 ![Logs](screenshots/05_Failed_Password_Logs_&_Attacker_IP.png)
 
+---
+
+## 🛡 Mitigation Recommendations  
+
+To reduce the risk of SSH brute-force attacks and strengthen system security, the following measures were implemented:
+
+- Enforced SSH key-based authentication by disabling password authentication.
+- Deployed Fail2Ban to automatically block IP addresses after repeated failed login attempts.
+- Applied firewall rules to restrict SSH access to trusted IP ranges only.
+- Enabled continuous monitoring and real-time alerting through Splunk SIEM.
+  
 ---
 
 ## 🛠 Tools Used
