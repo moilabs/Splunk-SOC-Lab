@@ -75,7 +75,10 @@ This lab maps the SSH brute force simulation to the MITRE ATT&CK framework:
   - Splunk SPL queries monitored `/var/log/secure` for failed authentication attempts
   - Alerts configured for multiple failed logins per IP
   - Top attacking IPs visualized on dashboards
-    
+
+    ### MITRE ATT&CK Visualization
+
+![MITRE Mapping - T1110](screenshots/mitre_t1110_mapping.png)
   ---
 
 ## 🔍 Detection Logic
