@@ -11,18 +11,20 @@ The lab environment consists of:
 
 - Attacker Machine: Kali Linux
 
-- Target Machines: RHEL / Zorin OS
+- Target Machines: RHEL 10 / Zorin OS
 
 - SIEM Platform: Splunk Enterprise
 
-- Detection: Custom SPL queries monitoring SSH login events
+- Log Source: /var/log/secure (SSH authentication logs)
+
+- Detection Method: Custom SPL queries monitoring failed SSH login attempts
   
 ![Lab Diagram](screenshots/01_Lab_Diagram.png)
 
 ---
 
 ## ⚔️ Attack Simulation
-SSH brute force attacks were simulated using Hydra to generate multiple failed login attempts against the target machines.
+SSH brute force attacks were simulated using Hydra to generate multiple failed authentication attempts against Linux target systems.
 
 ![Hydra Attack](screenshots/02_Hydra_Attack.png)
 
@@ -50,7 +52,7 @@ SSH brute force simulations were executed from a Kali Linux attacker machine on 
 - **Protocol:** SSH (Port 22)
 - - **Total Failed Attempts:** 294
 
-Both sessions generated multiple failed SSH authentication attempts, which were successfully detected and logged in Splunk.
+Both sessions generated high-volume failed authentication attempts, which were successfully detected and logged in Splunk.
 
 No successful login was observed during the attack simulation.
 
@@ -62,11 +64,13 @@ This lab maps the SSH brute force simulation to the MITRE ATT&CK framework:
 
 - **Technique ID:** T1110  
 - **Technique Name:** Brute Force  
-- **Description:** Attempts to gain access by systematically guessing passwords on SSH accounts.  
+- **Description:** Attempts to gain access by systematically guessing passwords on SSH accounts.
+  
 - **Observed Behavior in Lab:**
   - Multiple failed login attempts from single source IPs
   - Attempts against high-privileged accounts (root, admin)
   - Logins outside normal hours
+    
 - **Detection Method:**
   - Splunk SPL queries monitored `/var/log/secure` for failed authentication attempts
   - Alerts configured for multiple failed logins per IP
@@ -82,19 +86,36 @@ This query detects high-frequency failed SSH login attempts by aggregating event
 IPs generating more than 5 failed attempts per minute are flagged as potential brute force sources.  
 The detection logic supports real-time alerting and rapid identification of suspicious authentication activity.
 
+- index=* "Failed password"| rex "from (?<attacker_ip>(\d{1,3}\.){3}\d{1,3}|[a-fA-F0-9:]+)" | bucket _time span=1m | stats count by _time, attacker_ip | where count > 5 | sort -count
+  
+This logic supports real-time alerting and rapid identification of suspicious authentication behavior.
+  
 ![Detection Query](screenshots/03_detection_query.png)
 
 ---
 
 ## 🚨 Alert Triggered
-Splunk alert triggered when brute force threshold exceeded.
+A real-time Splunk alert was configured to trigger when brute force thresholds were exceeded.
+
+Alert actions included:
+
+- Security notification
+- Event correlation visibility
+- Dashboard update for investigation
 
 ![Alert](screenshots/04_SSH_Brute_Force_Alert.png)
 
 ---
 
 ## 🕵️ Investigation Workflow
-- Collected logs provided evidence of attacker IPs and failed login attempts, facilitating incident investigation.
+The investigation process included:
+- Identifying the attacking source IP
+- Reviewing failed authentication counts
+- Correlating timestamps with attack timeline
+- Verifying absence of successful compromise
+- Assessing targeted accounts
+
+Collected logs provided clear evidence supporting incident analysis and response validation.
 
 ![Logs](screenshots/05_Failed_Password_Logs_&_Attacker_IP.png)
 
@@ -112,16 +133,17 @@ To reduce the risk of SSH brute-force attacks and strengthen system security, th
 ---
 
 ## 🛠 Tools Used
-- Splunk SIEM
+- Splunk Enterprise
 - Kali Linux
-- Zorin OS / RHEL 10
+- Zorin OS & RHEL 10
 - Hydra
 
 ---
 
 ## 🎯 Skills Demonstrated
-- SIEM Monitoring
-- Log Analysis
-- Brute Force Detection
-- Alert Configuration
-- SOC Investigation Workflow
+- SIEM Monitoring & Alert Engineering
+- Log Analysis & Event Correlation
+- Brute Force Detection Engineering
+- MITRE ATT&CK Mapping
+- Incident Investigation Workflow
+- Defensive Hardening & Mitigation Strategy
