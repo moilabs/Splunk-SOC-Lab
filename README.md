@@ -2,7 +2,7 @@
 
 ## 📌 Repository Overview
 
-This repository contains hands-on Security Operations Center (SOC) lab projects using **Splunk Enterprise**. It demonstrates real-world Linux monitoring, SSH brute-force detection, and real-time alerting.
+This repository contains hands-on Security Operations Center (SOC) lab projects using **Splunk Enterprise**. It demonstrates real-world Linux monitoring, attack simulation, MITRE-aligned detection engineering, and real-time SOC alerting.
 
 The goal is to showcase practical SOC skills for internship or entry-level roles in cybersecurity.
 
@@ -25,9 +25,10 @@ The goal is to showcase practical SOC skills for internship or entry-level roles
 ### 2️⃣ SOC SSH Brute Force Detection Lab
 
 - Simulated SSH brute-force attacks using Hydra  
-- Collected and forwarded logs to Splunk for monitoring  
-- Created SPL queries to detect repeated failed login attempts  
-- Configured real-time alerts for immediate SOC response  
+- Engineered time-based SPL detection logic for high-frequency failed logins  
+- Mapped attack behavior to MITRE ATT&CK (T1110 – Brute Force)  
+- Built real-time alerting and investigation workflow  
+- Documented mitigation strategies and defensive hardening steps    
 
 📂 Folder: `SOC-SSH-Brute-Force-Detection-Lab`  
 📸 Screenshots available in `/screenshots` folder  
